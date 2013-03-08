@@ -1,0 +1,27 @@
+<resources>
+
+    <string name="app_name">Bright Awake</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_bright_alarm_main">BrightAwake</string>
+    <string name="title_activity_alarm_ring">BrightAwake</string>
+    <string name="alarm_off">Turn Off Alarm</string>
+    <string name="set_alarm">Set Alarm</string>
+    <string name="frequency"> Alarm Tone Pitch (low - high)</string>
+    <string name="test">Test Alarm</string>
+    <string name="cancel">Cancel</string>
+    <string name="snooze">Snooze</string>
+    <string name="about">About This App</string>
+    <string name="about_description">
+		<![CDATA[
+		\nNotes about this early version of the alarm clock:\n\n
+The volume the alarm will play at is the volume you have set for your alarms.  You can adjust this settings -> sounds -> volumes.\n\n
+
+The snooze is hard coded to be 5 minutes.\n\n
+
+This is the first version - intentionally without any fancy features.  If you encounter a bug, please tell me and include what device and what version of android you\'re using :)\n
+
+		]]>
+	</string>
+
+</resources>

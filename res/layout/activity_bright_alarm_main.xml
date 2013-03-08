@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="4dip"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+ 
+    <TimePicker
+        android:id="@+id/timePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <Button android:id="@+id/set_alarm"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:text="@string/set_alarm">
+        <requestFocus/>
+    </Button>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        >
+		<TextView
+		    android:id="@+id/stored_alarm"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text=""
+		    android:gravity="center"
+		    />
+	
+		<Button android:id="@+id/cancel_alarm"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:text="@string/cancel"
+	        />
+	</LinearLayout>
+    
+	<TextView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/frequency"
+	    />
+    
+	<SeekBar android:id="@+id/pitch_control"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:max="100"
+	/>
+	
+	<Button android:id="@+id/test_alarm"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:text="@string/test">
+    </Button>
+	
+	<Button android:id="@+id/about"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content" 
+        android:text="@string/about">
+    </Button>
+	
+	
+</LinearLayout>
+

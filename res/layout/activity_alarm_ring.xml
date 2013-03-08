@@ -1,0 +1,49 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools" 
+	android:id="@+id/background"
+	android:layout_width="match_parent" 
+	android:layout_height="match_parent"
+	>
+
+		<SurfaceView 
+		    android:id="@+id/surfaceview"
+			android:layout_width="1dp" 
+			android:layout_height="1dp" />
+
+	<RelativeLayout
+	    android:layout_width ="fill_parent"
+	    android:layout_below="@id/surfaceview"
+	    android:layout_height="fill_parent"
+	    android:gravity="center"
+	    
+	    >
+	   
+		<Button 
+	    	android:id="@+id/stop_alarm" 
+	    	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text="@string/alarm_off"
+			android:layout_centerInParent="true"
+			android:paddingBottom="8dp">
+			<requestFocus />
+		</Button>
+		
+		<RelativeLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center"
+		    android:layout_below="@id/stop_alarm"
+		    >
+		<Button 
+	    	android:id="@+id/snooze_alarm" 
+	    	android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text="@string/snooze"/>
+		</RelativeLayout>
+
+	</RelativeLayout>
+	
+	
+
+</RelativeLayout>
