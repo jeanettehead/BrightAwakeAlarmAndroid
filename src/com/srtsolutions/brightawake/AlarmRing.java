@@ -50,9 +50,17 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarm_ring);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		
+		Boolean isTest = false;
+		try{
+			isTest = (Boolean)getIntent().getExtras().get(Constants.Is_Test);
+			if(isTest == null)
+				isTest = false;
+		}
+		catch(NullPointerException e){
+			isTest = false;
+		}
 		prefs = this.getSharedPreferences("com.srtsolutions.brightawake", Context.MODE_PRIVATE);
-		
+
 		alarmFrequency = prefs.getInt(Alarm_Frequency, 500);
 
 		if(hasFlashTorch){
@@ -62,10 +70,17 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 
 		Button stopButton = (Button) findViewById(R.id.stop_alarm);
 		stopButton.setOnClickListener(stopAlarmListener);
-
-		Button snoozeButton = (Button) findViewById(R.id.snooze_alarm);
-		snoozeButton.setOnClickListener(snoozeAlarmListener);
 		activity = this;
+		Button snoozeButton = (Button) findViewById(R.id.snooze_alarm);
+		if(!isTest)
+		{
+			snoozeButton.setOnClickListener(snoozeAlarmListener);
+			snoozeButton.setVisibility(View.VISIBLE);
+		}
+		else{
+			snoozeButton.setVisibility(View.GONE);
+		}
+
 
 		if(!prefs.getBoolean(Constants.Alarm_In_Progress, false))
 		{
@@ -79,7 +94,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
-	
+
 	protected void initalizeCamera(){
 		try{
 			camera = Camera.open();
@@ -91,7 +106,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		if(camera != null)
 			hasFlashTorch = hasFlashTorch();
 	}
-	
+
 	protected void setUpPreview(){
 		surfaceView = (SurfaceView) this.findViewById(R.id.surfaceview);
 		surfaceHolder = surfaceView.getHolder();
@@ -108,7 +123,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		}
 		return false;
 	}
-	
+
 	@SuppressLint("NewApi")
 	private void storeBoolean(String key, Boolean val){
 		if (android.os.Build.VERSION.SDK_INT >= 9) {
@@ -201,7 +216,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 			initalizeCamera();
 
 			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-			
+
 			if(hasFlashTorch)
 				camera.startPreview();
 
@@ -343,7 +358,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 
 			Calendar snoozeTime = Calendar.getInstance();
 			snoozeTime.setTimeInMillis(System.currentTimeMillis());
-			snoozeTime.add(Calendar.SECOND, 5);	//TODO: minute
+			snoozeTime.add(Calendar.MINUTE, 5);	
 
 			// Schedule the alarm!
 			AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);

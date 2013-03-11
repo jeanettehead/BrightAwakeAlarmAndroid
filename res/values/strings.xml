@@ -15,12 +15,11 @@
     <string name="about_description">
 		<![CDATA[
 		\nNotes about this early version of the alarm clock:\n\n
-The volume the alarm will play at is the volume you have set for your alarms.  You can adjust this settings -> sounds -> volumes.\n\n
+The volume the alarm will play at is system alarm volume.  You can adjust this in settings > sounds > volumes.\n\n
 
-The snooze is hard coded to be 5 minutes.\n\n
+The snooze length 5 minutes.\n\n
 
-This is the first version - intentionally without any fancy features.  If you encounter a bug, please tell me and include what device and what version of android you\'re using :)\n
-
+This version is intentionally created to be simple. Please let me know if you encounter any errors.
 		]]>
 	</string>
 

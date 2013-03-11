@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.content.Context;
 
 public class BrightAlarmMain extends Activity implements Constants{
@@ -49,8 +48,9 @@ public class BrightAlarmMain extends Activity implements Constants{
 		//set time to most recent alarm setting or midnight
 		Calendar mostRecentAlarm = Calendar.getInstance();
 		mostRecentAlarm.setTimeInMillis(prefs.getLong(Constants.Alarm_Time, 0));
-		timePicker.setCurrentHour(mostRecentAlarm.get(Calendar.HOUR));
+		timePicker.setCurrentHour(mostRecentAlarm.get(Calendar.HOUR_OF_DAY));
 		timePicker.setCurrentMinute(mostRecentAlarm.get(Calendar.MINUTE));
+		
 		//set pitch to 50% or last set value
 		pitchSeeker = (SeekBar) findViewById(R.id.pitch_control);
 		pitchSeeker.setProgress(prefs.getInt(Constants.Pitch_Percent, 50));
@@ -68,7 +68,7 @@ public class BrightAlarmMain extends Activity implements Constants{
 	public void onResume(){
 		super.onResume();
 		//clears this out... just in case
-		prefs.edit().putBoolean(Constants.Alarm_In_Progress, false);
+		storeBoolean(Constants.Alarm_In_Progress, false);
 		setStoredAlarmText();
 	}
 
@@ -134,6 +134,17 @@ public class BrightAlarmMain extends Activity implements Constants{
 
 		}
 	};
+	
+
+	@SuppressLint("NewApi")
+	private void storeBoolean(String key, Boolean val){
+		if (android.os.Build.VERSION.SDK_INT >= 9) {
+			prefs.edit().putBoolean(key, val).apply();
+		}
+		else {
+			prefs.edit().putBoolean(key, val).commit();
+		}
+	}
 
 	@SuppressLint("NewApi")
 	private void storeInt(String key, int val){
@@ -160,7 +171,7 @@ public class BrightAlarmMain extends Activity implements Constants{
 		public void onClick(View v) {
 			storeInt(Pitch_Percent,pitchSeeker.getProgress());
 			Intent testIntent = new Intent().setClass(context, AlarmRing.class);
-			testIntent.putExtra("isTest", true);
+			testIntent.putExtra(Constants.Is_Test, true);
 			testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(testIntent);
 		}
@@ -178,7 +189,7 @@ public class BrightAlarmMain extends Activity implements Constants{
 			alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 			alarmManager.cancel(alarmAction);
 
-			Toast.makeText(context, "alarm cancelled", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, "alarm cancelled", Toast.LENGTH_SHORT).show();
 		}
 	};
 
