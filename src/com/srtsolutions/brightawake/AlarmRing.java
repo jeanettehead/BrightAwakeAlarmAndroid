@@ -44,7 +44,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	private SurfaceHolder surfaceHolder;
 	protected android.hardware.Camera camera;
 	protected SharedPreferences prefs;
-	protected boolean hasFlashTorch = false;
+	protected boolean hasFlashTorch;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,6 +63,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 
 		alarmFrequency = prefs.getInt(Alarm_Frequency, 500);
 
+		this.initalizeCamera();
 		if(hasFlashTorch){
 			setUpPreview();
 		}
@@ -95,6 +96,13 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
+	protected void setToBlack(){
+		
+	}
+	
+	protected void setToWhite(){
+		
+	}
 	protected void initalizeCamera(){
 		try{
 			camera = Camera.open();
@@ -115,7 +123,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	}
 
 	public Boolean hasFlashTorch(){
-		if(hasFlashTorch){
+		if(camera != null){
 			Parameters params = camera.getParameters(); 
 			List<String> modes = params.getSupportedFlashModes();
 			if(modes.contains(Parameters.FLASH_MODE_TORCH))
@@ -172,6 +180,8 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	private class AsyncRing extends AsyncTask<Activity, Integer, String>
 	{
 		private RelativeLayout background;
+		private Button alarmOff;
+		private Button alarmSnooze;
 		private Boolean bgIsWhite = false;
 		private Boolean isFirstTime = true;
 		private Activity activity;
@@ -194,15 +204,22 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		@Override
 		protected void onProgressUpdate(Integer... values)
 		{
-			if(background == null)
+			if(background == null){
 				background = (RelativeLayout) activity.findViewById(R.id.background);
+				alarmOff = (Button) activity.findViewById(R.id.stop_alarm);
+				alarmSnooze = (Button) activity.findViewById(R.id.snooze_alarm);
+			}
 
 			if(bgIsWhite){
 				background.setBackgroundColor(Color.BLACK);
+				alarmOff.setTextColor(Color.WHITE);
+				alarmSnooze.setTextColor(Color.WHITE);
 				bgIsWhite = false;
 			}
 			else{
 				background.setBackgroundColor(Color.WHITE);
+				alarmOff.setTextColor(Color.BLACK);
+				alarmSnooze.setTextColor(Color.BLACK);
 				bgIsWhite = true;
 			}
 		}
