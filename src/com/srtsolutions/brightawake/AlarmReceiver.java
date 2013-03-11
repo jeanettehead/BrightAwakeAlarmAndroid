@@ -17,9 +17,9 @@ public class AlarmReceiver extends BroadcastReceiver
 	public void onReceive(Context context, Intent intent)
 	{
 		SharedPreferences prefs = context.getSharedPreferences("com.srtsolutions.brightawake", Context.MODE_PRIVATE);
-	//	if(prefs.getBoolean(Constants.Alarm_In_Progress, false)){
-	//		return;
-	//	}
+		if(prefs.getBoolean(Constants.Alarm_In_Progress, false)){
+			return;
+		}
 		KeyguardManager key = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 	     KeyguardLock lock = key.newKeyguardLock("keyguardlock tag");
 	     lock.disableKeyguard();

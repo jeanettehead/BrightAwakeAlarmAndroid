@@ -11,13 +11,12 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-feature android:required="false" android:name="android.hardware.camera" />
+    <uses-feature android:required="false" android:name="android.hardware.camera.flash" />
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="13" />
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
 
     <application
         android:icon="@drawable/icon_72x72_02"

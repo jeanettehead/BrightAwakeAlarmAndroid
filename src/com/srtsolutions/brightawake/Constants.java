@@ -5,4 +5,6 @@ public interface Constants {
 	final String Pitch_Percent = "PitchPercent";
 	final String Alarm_Frequency = "AlarmFrequency";
 	final String Alarm_In_Progress = "AlarmInProgress";
+	final String Tag = "BrightAwakeAlarm";
+
 }

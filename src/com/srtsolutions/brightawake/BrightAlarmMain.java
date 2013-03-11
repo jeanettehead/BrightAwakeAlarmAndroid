@@ -3,6 +3,7 @@ package com.srtsolutions.brightawake;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -38,7 +39,6 @@ public class BrightAlarmMain extends Activity implements Constants{
 		context = this;
 		setContentView(R.layout.activity_bright_alarm_main);
 		prefs = getSharedPreferences("com.srtsolutions.brightawake", Context.MODE_PRIVATE);
-
 		Button setAlarmButton = (Button)findViewById(R.id.set_alarm);
 		setAlarmButton.setOnClickListener(setAlarmListener);
 
@@ -46,18 +46,20 @@ public class BrightAlarmMain extends Activity implements Constants{
 		cancelButton.setOnClickListener(cancelAlarmListener);
 
 		timePicker = (TimePicker) findViewById(R.id.timePicker1);
-		//set time to midnight
-		timePicker.setCurrentHour(0);
-		timePicker.setCurrentMinute(0);
-		//set pitch to 50%
+		//set time to most recent alarm setting or midnight
+		Calendar mostRecentAlarm = Calendar.getInstance();
+		mostRecentAlarm.setTimeInMillis(prefs.getLong(Constants.Alarm_Time, 0));
+		timePicker.setCurrentHour(mostRecentAlarm.get(Calendar.HOUR));
+		timePicker.setCurrentMinute(mostRecentAlarm.get(Calendar.MINUTE));
+		//set pitch to 50% or last set value
 		pitchSeeker = (SeekBar) findViewById(R.id.pitch_control);
-		pitchSeeker.setProgress(50);
+		pitchSeeker.setProgress(prefs.getInt(Constants.Pitch_Percent, 50));
 
 		storedAlarmText = (TextView) findViewById(R.id.stored_alarm);
 
 		Button testAlarm = (Button) findViewById(R.id.test_alarm);
 		testAlarm.setOnClickListener(testAlarmListener);
-		
+
 		Button aboutAlarm = (Button) findViewById(R.id.about);
 		aboutAlarm.setOnClickListener(aboutAlarmListener);
 	}
@@ -65,11 +67,13 @@ public class BrightAlarmMain extends Activity implements Constants{
 	@Override
 	public void onResume(){
 		super.onResume();
+		//clears this out... just in case
+		prefs.edit().putBoolean(Constants.Alarm_In_Progress, false);
 		setStoredAlarmText();
 	}
 
 	private void storeAlarmTime(){
-		prefs.edit().putLong(Alarm_Time, alarmTime.getTimeInMillis()).apply();
+		storeLong(Alarm_Time, alarmTime.getTimeInMillis());
 		setStoredAlarmText();
 	}
 
@@ -98,7 +102,7 @@ public class BrightAlarmMain extends Activity implements Constants{
 			// AndroidManifest.xml) instantiated and called, and then create an
 			// IntentSender to have the intent executed as a broadcast.
 
-			prefs.edit().putInt(Pitch_Percent, pitchSeeker.getProgress()).apply();
+			storeInt(Pitch_Percent, pitchSeeker.getProgress());
 
 			Intent intent = new Intent(BrightAlarmMain.this, AlarmReceiver.class);
 			alarmAction = PendingIntent.getBroadcast(BrightAlarmMain.this, 0, intent, 0);
@@ -120,7 +124,7 @@ public class BrightAlarmMain extends Activity implements Constants{
 
 			if(alarmTime.before(current))
 				alarmTime.add(Calendar.DATE, 1);
-			
+
 			storeAlarmTime();
 
 
@@ -131,11 +135,30 @@ public class BrightAlarmMain extends Activity implements Constants{
 		}
 	};
 
+	@SuppressLint("NewApi")
+	private void storeInt(String key, int val){
+		if (android.os.Build.VERSION.SDK_INT >= 9) {
+			prefs.edit().putInt(key, val).apply();
+		}
+		else {
+			prefs.edit().putInt(key, val).commit();
+		}
+	}
+	
+	@SuppressLint("NewApi")
+	private void storeLong(String key, long val){
+		if (android.os.Build.VERSION.SDK_INT >= 9) {
+			prefs.edit().putLong(key, val).apply();
+		}
+		else {
+			prefs.edit().putLong(key, val).commit();
+		}
+	}
+
 	private OnClickListener testAlarmListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			prefs.edit().putInt(Pitch_Percent, pitchSeeker.getProgress()).apply();
-
+			storeInt(Pitch_Percent,pitchSeeker.getProgress());
 			Intent testIntent = new Intent().setClass(context, AlarmRing.class);
 			testIntent.putExtra("isTest", true);
 			testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -158,14 +181,14 @@ public class BrightAlarmMain extends Activity implements Constants{
 			Toast.makeText(context, "alarm cancelled", Toast.LENGTH_SHORT).show();
 		}
 	};
-	
+
 	private OnClickListener aboutAlarmListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
 			builder.setMessage(R.string.about_description);
 			builder.create().show();
-			
+
 		}
 	};
 }
