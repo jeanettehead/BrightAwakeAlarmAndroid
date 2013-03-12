@@ -1,7 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="4dip"
-    android:gravity="center_horizontal"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
- 
+    
+ <LinearLayout android:orientation="vertical" android:padding="4dip"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="wrap_content"
@@ -59,5 +61,6 @@
     </Button>
 	
 	
-</LinearLayout>
+	</LinearLayout>
 
+</ScrollView>

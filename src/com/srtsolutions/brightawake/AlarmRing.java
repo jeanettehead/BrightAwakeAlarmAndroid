@@ -97,11 +97,11 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	}
 
 	protected void setToBlack(){
-		
+
 	}
-	
+
 	protected void setToWhite(){
-		
+
 	}
 	protected void initalizeCamera(){
 		try{
@@ -113,6 +113,8 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		}
 		if(camera != null)
 			hasFlashTorch = hasFlashTorch();
+		else
+			hasFlashTorch = false;
 	}
 
 	protected void setUpPreview(){
@@ -397,13 +399,15 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		try {
-			camera.setPreviewDisplay(holder);
+		if(camera != null)
+		{
+			try {
+				camera.setPreviewDisplay(holder);
+			}
+			catch(IOException e){
+				e.printStackTrace();
+			}
 		}
-		catch(IOException e){
-			e.printStackTrace();
-		}
-
 	}
 
 

@@ -14,7 +14,7 @@
     <string name="about">About This App</string>
     <string name="about_description">
 		<![CDATA[
-		\nNotes about this early version of the alarm clock:\n\n
+		Notes about this early version of the alarm clock:\n\n
 The volume the alarm will play at is system alarm volume.  You can adjust this in settings > sounds > volumes.\n\n
 
 The snooze length 5 minutes.\n\n
