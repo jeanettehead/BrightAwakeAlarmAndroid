@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECEIVE_QUICKBOOT_POWERON"/>
-    <uses-feature android:required="false" android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:required="false" android:name="android.hardware.camera.flash" />
 
     <uses-sdk
