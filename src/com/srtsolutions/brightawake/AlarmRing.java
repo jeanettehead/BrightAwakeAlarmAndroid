@@ -187,6 +187,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		private Boolean bgIsWhite = false;
 		private Boolean isFirstTime = true;
 		private Activity activity;
+		private Parameters camParams;
 		private AudioTrack audio = new AudioTrack(AudioManager.STREAM_ALARM,
 				8000, AudioFormat.CHANNEL_CONFIGURATION_MONO,
 				AudioFormat.ENCODING_PCM_16BIT, generatedSnd.length,
@@ -226,6 +227,36 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 			}
 		}
 
+		protected void turnFlashOn(){
+			try{
+				if(hasFlashTorch){
+					camParams = camera.getParameters();
+					camParams.setFlashMode(Parameters.FLASH_MODE_TORCH);
+					camera.setParameters(camParams);
+				}
+			}
+			catch(Exception e)
+			{e.printStackTrace();
+
+			}
+			//	if(hasFlashTorch)
+			//		camera.startPreview();
+		}
+
+		protected void turnFlashOff(){
+			try{
+				if(hasFlashTorch)
+				{
+					camParams = camera.getParameters();
+					camParams.setFlashMode(Parameters.FLASH_MODE_OFF);
+					camera.setParameters(camParams);
+					//		camera.stopPreview();
+				}
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 		@Override
 		protected String doInBackground(Activity... values) {
 			activity = values[0];
@@ -235,26 +266,16 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 			initalizeCamera();
 
 			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
 			if(hasFlashTorch)
 				camera.startPreview();
 
 			while(!this.isCancelled()) {
-				Parameters camParams;
-				try{
-					if(hasFlashTorch){
-						camParams = camera.getParameters();
-						camParams.setFlashMode(Parameters.FLASH_MODE_TORCH);
-						camera.setParameters(camParams);
-					}
-				}
-				catch(Exception e)
-				{e.printStackTrace();
-
-				}
+				turnFlashOn();
 				vibrator.vibrate(alarmFrequency);
-				publishProgress();
 				playSound();
+				publishProgress();
+
+				//light is on half of the pulse
 				try {
 					Thread.sleep(alarmFrequency);
 				} catch (InterruptedException e) {
@@ -262,21 +283,13 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 					e.printStackTrace();
 				}
 
+
 				if(!this.isCancelled()){
-					try{
-						if(hasFlashTorch)
-						{
-							camParams = camera.getParameters();
-							camParams.setFlashMode(Parameters.FLASH_MODE_OFF);
-							camera.setParameters(camParams);
-						}
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
+					turnFlashOff();
 					vibrator.cancel();
 					publishProgress();
 
+					//light is off pulse
 					try {
 						Thread.sleep(alarmFrequency);
 					} catch (InterruptedException e) {
@@ -297,8 +310,10 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 			super.onCancelled();
 
 			audio.release();
-			if(camera != null)
+			if(camera != null){
+				turnFlashOff();
 				camera.release();
+			}
 
 			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			vibrator.cancel();
@@ -314,7 +329,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		dnumSamples = Math.ceil(dnumSamples);
 		int numSamples = (int) dnumSamples;
 		double sample[] = new double[numSamples];
-		generatedSnd = new byte[4 * numSamples];  // 2 * 2 * numsamples.  added a second *2 to generate white space in the tone
+		generatedSnd = new byte[4 * numSamples];  // 2 * 2 * numsamples.  added a second *1.5 to generate white space in the tone
 
 		for (int i = 0; i < numSamples; ++i) {      // Fill the sample array
 			sample[i] = Math.sin(freqOfTone * 2 * Math.PI * i / (sampleRate));
@@ -416,5 +431,4 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		// TODO Auto-generated method stub
 
 	}
-
 }
