@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -50,6 +51,9 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarm_ring);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+		PowerManager.WakeLock wake = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "Alarm is Started");
+		wake.release();
 		Boolean isTest = false;
 		try{
 			isTest = (Boolean)getIntent().getExtras().get(Constants.Is_Test);
