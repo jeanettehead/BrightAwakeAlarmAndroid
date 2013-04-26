@@ -12,9 +12,11 @@
     <string name="cancel">Cancel</string>
     <string name="snooze">Snooze</string>
     <string name="about">About This App</string>
+    <string name="sponsor">BrightAwake was sponsored by SRT Solutions</string>
+    <string name="website">www.srtsolutions.com</string>
     <string name="about_description">
 		<![CDATA[
-		Notes about this early version of the alarm clock:\n\n
+		Notes about this first version of BrightAwake:\n\n
 The volume the alarm will play at is system alarm volume.  You can adjust this in settings > sounds > volumes.\n\n
 
 The snooze length 5 minutes.\n\n

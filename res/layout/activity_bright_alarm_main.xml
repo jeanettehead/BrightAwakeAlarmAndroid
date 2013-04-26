@@ -60,6 +60,19 @@
         android:text="@string/about">
     </Button>
 	
+	<TextView	
+	    android:paddingTop="15dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/sponsor"
+	    />
+	<TextView	
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:autoLink = "web"
+	    android:text="@string/website"
+	    />
+	
 	
 	</LinearLayout>
 
