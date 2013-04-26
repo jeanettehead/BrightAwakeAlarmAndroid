@@ -31,6 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver
 		Intent mainIntent = new Intent().setClass(context, AlarmRing.class);
 		mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(mainIntent);
+		wake.release();
 	}
 } 
 

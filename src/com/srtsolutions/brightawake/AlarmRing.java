@@ -9,7 +9,6 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.Vibrator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -50,10 +49,8 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarm_ring);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-		PowerManager.WakeLock wake = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "Alarm is Started");
-		wake.release();
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		Boolean isTest = false;
 		try{
 			isTest = (Boolean)getIntent().getExtras().get(Constants.Is_Test);
@@ -131,8 +128,9 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	public Boolean hasFlashTorch(){
 		if(camera != null){
 			Parameters params = camera.getParameters(); 
+			
 			List<String> modes = params.getSupportedFlashModes();
-			if(modes.contains(Parameters.FLASH_MODE_TORCH))
+			if(modes != null && modes.contains(Parameters.FLASH_MODE_TORCH))
 				return true;
 		}
 		return false;
