@@ -7,5 +7,7 @@ public interface Constants {
 	final String Alarm_In_Progress = "AlarmInProgress";
 	final String Is_Test = "IsTest";
 	final String Tag = "BrightAwakeAlarm";
-
+	static WakeLockManager wakeManager = new WakeLockManager();
+	
+	
 }

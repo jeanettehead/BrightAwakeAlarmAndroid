@@ -49,8 +49,11 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarm_ring);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		
+		Constants.wakeManager.acquireLock(this);
+		
+        
+        
 		Boolean isTest = false;
 		try{
 			isTest = (Boolean)getIntent().getExtras().get(Constants.Is_Test);
@@ -94,7 +97,9 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 		else{
 			finish();
 		}
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		Constants.wakeManager.acquireLock(this);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	protected void setToBlack(){
@@ -148,16 +153,18 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 	@Override
 	public void onDestroy(){
 		activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+		Constants.wakeManager.releaseLock();
+		
 		if(ringTask!= null){
 			ringTask.cancel(true);
 		}
 		super.onDestroy();
 		try{
-			camera.release();
+			if(camera != null)
+				camera.release();
+				camera = null;
 		}
 		catch(RuntimeException e){
-			e.printStackTrace();
 		}
 
 		this.storeBoolean(Constants.Alarm_In_Progress, false);
@@ -315,6 +322,7 @@ public class AlarmRing extends Activity implements SurfaceHolder.Callback, Const
 			if(camera != null){
 				turnFlashOff();
 				camera.release();
+				camera = null;
 			}
 
 			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
