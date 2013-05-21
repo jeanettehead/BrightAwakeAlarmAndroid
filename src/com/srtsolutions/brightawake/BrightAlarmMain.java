@@ -101,13 +101,14 @@ public class BrightAlarmMain extends Activity implements Constants{
 			// name to have our own receiver (which has been published in
 			// AndroidManifest.xml) instantiated and called, and then create an
 			// IntentSender to have the intent executed as a broadcast.
-
+			
+			timePicker.clearFocus();
 			storeInt(Pitch_Percent, pitchSeeker.getProgress());
 
 			Intent intent = new Intent(BrightAlarmMain.this, AlarmReceiver.class);
 			alarmAction = PendingIntent.getBroadcast(BrightAlarmMain.this, 0, intent, 0);
 
-
+			
 			int hour = timePicker.getCurrentHour();
 			int minute = timePicker.getCurrentMinute();
 
