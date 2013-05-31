@@ -16,7 +16,6 @@
 	    android:layout_below="@id/surfaceview"
 	    android:layout_height="fill_parent"
 	    android:gravity="center"
-	    
 	    >
 	   
 		<Button 
@@ -34,6 +33,7 @@
 		    android:layout_height="wrap_content"
 		    android:gravity="center"
 		    android:layout_below="@id/stop_alarm"
+		    android:paddingTop="50dp"
 		    >
 		<Button 
 	    	android:id="@+id/snooze_alarm" 
